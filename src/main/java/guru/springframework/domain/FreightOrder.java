@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class FreightOrder {
     @ApiModelProperty(notes = "金额")
     private BigDecimal totalPrice;
      
-    
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(notes = "时间")
     private Date ct;
     

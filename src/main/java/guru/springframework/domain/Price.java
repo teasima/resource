@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -27,12 +30,15 @@ public class Price {
     private Integer id;
  
     @ApiModelProperty(notes = "货源")
-    private Integer goodsSourceId;
-    
+	@OneToOne(targetEntity = GoodsSource.class)
+	@JoinColumn(name = "goods_source_id", referencedColumnName = "id")
+    @JsonBackReference
+	private GoodsSource goodssource;
     
     @ApiModelProperty(notes = "金额")
     private BigDecimal totalPrice;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(notes = "时间")
     private Date ct;
     

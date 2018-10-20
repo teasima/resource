@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.math.BigDecimal;
 
@@ -34,6 +35,12 @@ public class GoodsSource {
     @OneToOne(targetEntity = SalesMan.class)
     @JoinColumn(name = "sales_man_id",referencedColumnName = "id")
     private SalesMan salesMan;
+    
+	@ApiModelProperty(notes = "价格")
+	@OneToOne(targetEntity = Price.class,cascade=CascadeType.ALL)
+	@JoinColumn(name = "price_id", referencedColumnName = "id")
+	@JsonManagedReference
+	private Price price;
     
     @ApiModelProperty(notes = "地址")
     private String address;
