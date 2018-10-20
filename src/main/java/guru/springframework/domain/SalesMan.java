@@ -32,6 +32,7 @@ public class SalesMan {
     @ApiModelProperty(notes = "地址")
     private String address;
     
+    @Column(unique = true)
     @ApiModelProperty(notes = "电话")
     private String tel;
     
@@ -39,6 +40,7 @@ public class SalesMan {
     @ApiModelProperty(notes = "邮箱")
     private String email;
     
+    @Column(unique = true)
     @ApiModelProperty(notes = "用户名")
     private String username;
     @ApiModelProperty(notes = "密码")

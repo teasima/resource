@@ -29,6 +29,7 @@ public class CarrierVehicle {
     @ApiModelProperty(notes = "司机名称")
     private String name;
     
+    @Column(unique = true)
     @ApiModelProperty(notes = "车牌")
     private String plate;
     

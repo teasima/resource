@@ -9,7 +9,7 @@ package guru.springframework.util;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
-
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -55,6 +55,17 @@ public class JsonUtils {
 	public static String beanToJson(Object obj) throws Exception {
 		try {
 			ObjectMapper objectMapper = getMapperInstance(false);
+			String json = objectMapper.writeValueAsString(obj);
+			return json;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public static String beanToJsonNonNULL(Object obj) throws Exception {
+		try {
+			ObjectMapper objectMapper = getMapperInstance(true);
+			objectMapper.setSerializationInclusion(Include.NON_NULL);
 			String json = objectMapper.writeValueAsString(obj);
 			return json;
 		} catch (Exception e) {

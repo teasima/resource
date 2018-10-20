@@ -25,7 +25,7 @@ public class ProductRepositoryTest {
     @Test
     public void testSaveProduct(){
         //setup product
-//        Product product = new Product();
+        Product product = new Product();
 //        product.setDescription("Spring Framework Guru Shirt");
 //        product.setPrice(new BigDecimal("18.95"));
 //        product.setProductId("1234");

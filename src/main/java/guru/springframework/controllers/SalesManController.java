@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/salesMan")
 @Getter
 @Setter
-@Api(value = "onlinestore", description = "Operations pertaining to products in Online Store")
+@Api(value = "salesMan", description = "Operations pertaining to products in Online Store")
 public class SalesManController {
 
 	@Autowired

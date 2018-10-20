@@ -31,7 +31,7 @@ public class FreightOrder {
     @ApiModelProperty(notes = "UNPAID , PAID ,SHIPPED , FINISHED")
     private OrderStatus status;
     
-    
+    @Column(unique = true)
     @ApiModelProperty(notes = "定单编号")
     private String code;
     

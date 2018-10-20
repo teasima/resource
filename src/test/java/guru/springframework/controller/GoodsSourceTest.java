@@ -30,15 +30,18 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import guru.springframework.SpringBootWebApplication;
+import guru.springframework.controllers.GoodsSourceController;
 import guru.springframework.controllers.SalesManController;
+import guru.springframework.domain.GoodsSource;
 import guru.springframework.domain.SalesMan;
+import guru.springframework.domain.Seller;
 import guru.springframework.util.JsonUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = { SpringBootWebApplication.class, MockServletContext.class })
-public class SalesManTest {
+public class GoodsSourceTest {
 	@Autowired
-	private SalesManController controller;
+	private GoodsSourceController controller;
 	private MockMvc mockMvc;
 	@Mock
 	MockHttpServletRequest request;
@@ -51,20 +54,29 @@ public class SalesManTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 	}
 
-	// @Test
+//	@Test
 	@Rollback(false)
 	public void testInsert() throws Exception {
-		SalesMan toInsert = new SalesMan(null, "小李", "黄燕村", "13188883333", "litteli", "litteli", "litteli",
-				new Byte("0"));
-		when(request.getParameter("traineeTel")).thenReturn("15989027318");
+		Seller s = new Seller();
+		s.setName("广东大亚湾煤气站");
+		SalesMan SalesMan = new SalesMan();
+		SalesMan.setId(2);
+		GoodsSource toInsert = new GoodsSource();
+		toInsert.setSalesMan(SalesMan);
+		toInsert.setSeller(s);
 		mockMvc.perform(
-				post("/salesMan/add").contentType(MediaType.APPLICATION_JSON).content(JsonUtils.beanToJson(toInsert)))
+				post("/goodsSource/add").contentType(MediaType.APPLICATION_JSON).content(JsonUtils.beanToJsonNonNULL(toInsert)))
 				.andDo(MockMvcResultHandlers.print());
 	}
 
-	@Test
+	// @Test
 	public void testFindById() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/salesMan/show/2")).andDo(MockMvcResultHandlers.print());
+		mockMvc.perform(MockMvcRequestBuilders.get("/goodsSource/show/2")).andDo(MockMvcResultHandlers.print());
 	}
+	 @Test
+		public void testList() throws Exception {
+			mockMvc.perform(MockMvcRequestBuilders.get("/goodsSource/list").param("page", "0").param("size", "20")).andDo(MockMvcResultHandlers.print());
+		}
+
 
 }

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/order")
 @Getter
 @Setter
-@Api(value = "onlinestore", description = "Operations pertaining to products in Online Store")
+@Api(value = "order", description = "Operations pertaining to products in Online Store")
 public class OrderController {
 
 	@Autowired
