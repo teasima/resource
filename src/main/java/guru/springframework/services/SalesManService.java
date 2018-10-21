@@ -13,7 +13,7 @@ public interface SalesManService {
 
 	SalesMan getById(Integer id);
 
-	SalesMan save(SalesMan Order);
+	SalesMan save(SalesMan Order) throws Exception;
 
     void delete(Integer id);
 

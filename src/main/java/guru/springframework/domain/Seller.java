@@ -9,6 +9,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -18,6 +20,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @EqualsAndHashCode
 @NoArgsConstructor
+@DynamicUpdate(true)
 public class Seller {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

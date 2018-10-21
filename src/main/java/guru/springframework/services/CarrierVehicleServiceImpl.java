@@ -1,13 +1,13 @@
 package guru.springframework.services;
 
-import guru.springframework.domain.SalesMan;
-import guru.springframework.domain.SalesMan;
+import guru.springframework.domain.CarrierVehicle;
 import guru.springframework.domain.Product;
-import guru.springframework.repositories.SalesManRepository;
-import guru.springframework.util.BeanUtils;
+import guru.springframework.domain.Seller;
+import guru.springframework.repositories.CarrierVehicleRepository;
 import guru.springframework.repositories.ProductDAO;
 import guru.springframework.repositories.ProductRepository;
 import guru.springframework.repositories.ProfitJpaSpecificationExecutor;
+import guru.springframework.repositories.SellerRepository;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
@@ -31,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -41,35 +43,33 @@ import org.springframework.util.StringUtils;
 @Service
 @Getter
 @Setter
-public class SalesManServiceImpl implements SalesManService {
-
+public class CarrierVehicleServiceImpl implements CarrierVehicleService {
 	@Autowired
-	private SalesManRepository SalesManRepository;
+	private CarrierVehicleRepository CarrierVehicleRepository;
 
 	@Override
-	public SalesMan getById(Integer id) {
+	public CarrierVehicle getById(Integer id) {
 		// TODO Auto-generated method stub
-		return SalesManRepository.findById(id).orElse(null);
+		return CarrierVehicleRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public SalesMan save(SalesMan SalesMan)throws Exception {
+	public CarrierVehicle save(CarrierVehicle CarrierVehicle) throws DataIntegrityViolationException {
 		log.log(Level.INFO, "save");
-		if (SalesMan.getId() != null && SalesMan.getId() > 0) {
-
-			SalesMan.setDisabled(null);
-			SalesMan db = SalesManRepository.findById(SalesMan.getId()).orElse(null);
-			BeanUtils.copyPropertiesIgnoreNull(SalesMan, db);
-			return SalesManRepository.save(db);
-		} else
-
-			return SalesManRepository.save(SalesMan);
+	
+		return CarrierVehicleRepository.save(CarrierVehicle);
 	}
 
 	@Override
 	public void delete(Integer id) {
-		log.log(Level.INFO, "deleteSalesMan called");
-		SalesManRepository.deleteById(id);
+		log.log(Level.INFO, "deleteCarrierVehicle called");
+		CarrierVehicleRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<CarrierVehicle> list(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return CarrierVehicleRepository.findAll(pageable);
 	}
 
 }

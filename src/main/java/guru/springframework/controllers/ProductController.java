@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/statistics")
-@Api(value = "statistics", description = "Operations pertaining to products in Online Store")
+@Api(value = "statistics", description = "Operations pertaining to products in QiLaile")
 public class ProductController {
 
 	private ProductService productService;

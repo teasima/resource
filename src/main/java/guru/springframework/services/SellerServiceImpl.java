@@ -1,13 +1,14 @@
 package guru.springframework.services;
 
-import guru.springframework.domain.SalesMan;
-import guru.springframework.domain.SalesMan;
+import guru.springframework.domain.Seller;
 import guru.springframework.domain.Product;
-import guru.springframework.repositories.SalesManRepository;
-import guru.springframework.util.BeanUtils;
+import guru.springframework.domain.ShipAddress;
+import guru.springframework.repositories.SellerRepository;
 import guru.springframework.repositories.ProductDAO;
 import guru.springframework.repositories.ProductRepository;
 import guru.springframework.repositories.ProfitJpaSpecificationExecutor;
+import guru.springframework.repositories.ShipAddressRepository;
+import guru.springframework.util.BeanUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
@@ -31,9 +32,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -41,35 +45,42 @@ import org.springframework.util.StringUtils;
 @Service
 @Getter
 @Setter
-public class SalesManServiceImpl implements SalesManService {
+public class SellerServiceImpl implements SellerService {
 
 	@Autowired
-	private SalesManRepository SalesManRepository;
+	private SellerRepository SellerRepository;
 
 	@Override
-	public SalesMan getById(Integer id) {
+	public Seller getById(Integer id) {
 		// TODO Auto-generated method stub
-		return SalesManRepository.findById(id).orElse(null);
+		return SellerRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public SalesMan save(SalesMan SalesMan)throws Exception {
+	public Seller save(Seller Seller) throws DataIntegrityViolationException {
 		log.log(Level.INFO, "save");
-		if (SalesMan.getId() != null && SalesMan.getId() > 0) {
+		if (Seller.getId() != null && Seller.getId() > 0) {
 
-			SalesMan.setDisabled(null);
-			SalesMan db = SalesManRepository.findById(SalesMan.getId()).orElse(null);
-			BeanUtils.copyPropertiesIgnoreNull(SalesMan, db);
-			return SalesManRepository.save(db);
+			Seller.setDisabled(null);
+			Seller db = SellerRepository.findById(Seller.getId()).orElse(null);
+			BeanUtils.copyPropertiesIgnoreNull(Seller, db);
+			return SellerRepository.save(db);
 		} else
 
-			return SalesManRepository.save(SalesMan);
+			return SellerRepository.save(Seller);
 	}
 
 	@Override
 	public void delete(Integer id) {
-		log.log(Level.INFO, "deleteSalesMan called");
-		SalesManRepository.deleteById(id);
+		log.log(Level.INFO, "deleteSeller called");
+		SellerRepository.deleteById(id);
 	}
+
+	@Override
+	public Page<Seller> list(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return SellerRepository.findAll(pageable);
+	}
+ 
 
 }

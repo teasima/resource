@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -26,13 +27,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/salesMan")
 @Getter
 @Setter
-@Api(value = "salesMan", description = "Operations pertaining to products in Online Store")
+@Api(value = "salesMan", description = "Operations pertaining to sales men in QiLaile")
 public class SalesManController {
 
 	@Autowired
 	private SalesManService SalesManService;
 
-	@ApiOperation(value = "Search a product with an ID", response = Product.class)
+	@ApiOperation(value = "Search a  sales men with an ID", response = Product.class)
 	@RequestMapping(value = "/show/{id}", method = RequestMethod.GET, produces = "application/json")
 	public SalesMan showProduct(@PathVariable Integer id, Model model) {
 		SalesMan product = SalesManService.getById(id);
@@ -42,8 +43,14 @@ public class SalesManController {
 	@ApiOperation(value = "Add a product")
 	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity saveProduct(@RequestBody SalesMan product) {
-		SalesManService.save(product);
-		return new ResponseEntity("Product saved successfully", HttpStatus.OK);
+		try {
+			SalesManService.save(product);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity("value should be unique!", HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity("sales men saved successfully", HttpStatus.OK);
 	}
 
 }

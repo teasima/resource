@@ -32,9 +32,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import guru.springframework.SpringBootWebApplication;
+import guru.springframework.controllers.SellerController;
 import guru.springframework.controllers.GoodsSourceController;
 import guru.springframework.controllers.SalesManController;
-import guru.springframework.domain.Buyer;
+import guru.springframework.domain.Seller;
 import guru.springframework.domain.GoodsSource;
 import guru.springframework.domain.Price;
 import guru.springframework.domain.SalesMan;
@@ -44,9 +45,9 @@ import guru.springframework.util.JsonUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = { SpringBootWebApplication.class, MockServletContext.class })
-public class GoodsSourceTest {
+public class SellerTest {
 	@Autowired
-	private GoodsSourceController controller;
+	private SellerController controller;
 	private MockMvc mockMvc;
 	@Mock
 	MockHttpServletRequest request;
@@ -59,73 +60,51 @@ public class GoodsSourceTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 	}
 
-//	@Test
+	@Test
 	@Rollback(false)
 	public void testInsert() throws Exception {
-		Seller s = new Seller();
-		s.setName("广东大亚湾煤气站");
-		SalesMan SalesMan = new SalesMan();
-		SalesMan.setId(2);
-		Price p = new Price();
-		p.setCt(new Date());
-		p.setTotalPrice(new BigDecimal("25"));
-		p.setDiscount(0.8f);
-		p.setUnit("吨");
-		GoodsSource toInsert = new GoodsSource();
-		p.setGoodssource(toInsert);
-		toInsert.setSalesMan(SalesMan);
-		toInsert.setSeller(s);
-		toInsert.setPrice(p);
+		Seller toInsert = new Seller();
+		toInsert.setName("广东大亚湾煤气站");
+		toInsert.setTel("0755110");
 		mockMvc.perform(
-				post("/goodsSource/add").contentType(MediaType.APPLICATION_JSON).content(JsonUtils.beanToJsonNonNULL(toInsert)))
+				post("/seller/add").contentType(MediaType.APPLICATION_JSON).content(JsonUtils.beanToJsonNonNULL(toInsert)))
 				.andDo(MockMvcResultHandlers.print());
 	}
 	
 //	@Test
+		@Rollback(false)
+		public void testupdate() throws Exception {
+			Seller toInsert = new Seller();
+			toInsert.setId(1);
+//			toInsert.setName("中国人民银行");
+			toInsert.setTel("0755110");
+			toInsert.setEmail("shishi@332324.com");
+			mockMvc.perform(
+					post("/Seller/update").contentType(MediaType.APPLICATION_JSON).content(JsonUtils.beanToJsonNonNULL(toInsert)))
+			.andDo(MockMvcResultHandlers.print());
+	}
+	
+//	@Test
 	@Rollback(false)
-	public void testInsertPrice() throws Exception {
-		GoodsSource GoodsSource = new GoodsSource();
-		GoodsSource.setId(3);
-		Price p = new Price();
-		p.setCt(new Date());
-		p.setTotalPrice(new BigDecimal("566"));
-		p.setDiscount(0.8f);
-		p.setUnit("吨");
-		p.setGoodssource(GoodsSource);
+	public void testInsertAddress() throws Exception {
+		Seller Seller = new Seller();
+		Seller.setId(1);
+		ShipAddress a = new ShipAddress();
+		a.setAddress("深圳市灵芝地铁站");
+		a.setTel("110");
+		
 		mockMvc.perform(
-				post("/goodsSource/price/add").contentType(MediaType.APPLICATION_JSON).content(JsonUtils.beanToJsonNonNULL(p)))
+				post("/Seller/address/add").contentType(MediaType.APPLICATION_JSON).content(JsonUtils.beanToJsonNonNULL(a)))
 				.andDo(MockMvcResultHandlers.print());
 	}
 
-
-	@Test
+	// @Test
 	public void testFindById() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/goodsSource/show/3")).andDo(MockMvcResultHandlers.print());
+		mockMvc.perform(MockMvcRequestBuilders.get("/goodsSource/show/2")).andDo(MockMvcResultHandlers.print());
 	}
 //	 @Test
 		public void testList() throws Exception {
-			mockMvc.perform(MockMvcRequestBuilders.get("/goodsSource/list").param("page", "0").param("size", "20")).andDo(MockMvcResultHandlers.print());
-		}
-		
-// @Test
-		public void testPrices() throws Exception {
-			mockMvc.perform(MockMvcRequestBuilders.get("/goodsSource/price/list").param("page", "0").param("goodsSourceId", "3")).andDo(MockMvcResultHandlers.print());
-		}
-		
-//		@Test
-		@Rollback(false)
-		public void testupdate() throws Exception {
-			GoodsSource GoodsSource = new GoodsSource();
-			GoodsSource.setId(3);
-//			GoodsSource.setArea("湖北省XX市武昌区");
-//			GoodsSource.setAddress("珞咖山小区12栋205");
-//			GoodsSource.setTel("1333333333");
-			SalesMan SalesMan = new SalesMan();
-			SalesMan.setId(2);
-			GoodsSource.setSalesMan(SalesMan);
-			mockMvc.perform(
-					post("/goodsSource/update").contentType(MediaType.APPLICATION_JSON).content(JsonUtils.beanToJsonNonNULL(GoodsSource)))
-			.andDo(MockMvcResultHandlers.print());
+			mockMvc.perform(MockMvcRequestBuilders.get("/seller/list").param("page", "0").param("size", "20")).andDo(MockMvcResultHandlers.print());
 		}
 
 

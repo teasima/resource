@@ -8,18 +8,18 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import guru.springframework.domain.Buyer;
+import guru.springframework.domain.CarrierVehicle;
 import guru.springframework.domain.Order;
-import guru.springframework.domain.OrderStatus;
 
-public interface OrderService {
+public interface CarrierVehicleService {
 
-    Order getById(Integer id);
+	CarrierVehicle getById(Integer id);
 
-    Order save(Order Order) throws Exception;
+	CarrierVehicle save(CarrierVehicle Order) throws Exception;
 
     void delete(Integer id);
     
-    Page<Order> list(Integer salesManId,OrderStatus OrderStatus,Pageable pageable);
+   Page<CarrierVehicle> list(Pageable pageable);
+
 
 }

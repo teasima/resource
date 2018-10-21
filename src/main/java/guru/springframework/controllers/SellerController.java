@@ -1,10 +1,13 @@
 package guru.springframework.controllers;
 
-import guru.springframework.domain.GoodsSource;
+import guru.springframework.domain.Seller;
 import guru.springframework.domain.Order;
-import guru.springframework.domain.OrderStatus;
+import guru.springframework.domain.ShipAddress;
+import guru.springframework.domain.Seller;
 import guru.springframework.repositories.OrderRepository;
+import guru.springframework.services.SellerService;
 import guru.springframework.services.OrderService;
+import guru.springframework.services.SellerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -16,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.TransientPropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -29,57 +33,57 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/seller")
 @Getter
 @Setter
-@Api(value = "order", description = "Operations pertaining to orders in QiLaile")
-public class OrderController {
+@Api(value = "seller", description = "Operations pertaining to Seller in QiLaile")
+public class SellerController {
 
 	@Autowired
-	private OrderService orderService;
+	private SellerService SellerService;
 
-	@ApiOperation(value = "Search an order with an ID", response = Order.class)
+	@ApiOperation(value = "Search a Seller with an ID", response = Seller.class)
 	@RequestMapping(value = "/show/{id}", method = RequestMethod.GET, produces = "application/json")
-	public Order showorder(@PathVariable Integer id, Model model) {
-		Order order = orderService.getById(id);
-		return order;
+	public Seller showSeller(@PathVariable Integer id, Model model) {
+		Seller Seller = SellerService.getById(id);
+		return Seller;
 	}
 
-	@ApiOperation(value = "Add an order")
+	@ApiOperation(value = "Add a Seller")
 	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity saveorder(@RequestBody Order order) {
-
+	public ResponseEntity saveSeller(@RequestBody Seller Seller) {
 		try {
-			orderService.save(order);
+			SellerService.save(Seller);
 		} catch (DataIntegrityViolationException e) {
 			return new ResponseEntity("value should be unique!", HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity("Order saved successfully", HttpStatus.OK);
+		return new ResponseEntity("Seller saved successfully", HttpStatus.OK);
 	}
-
-	@ApiOperation(value = "Update an order,can only be updaed before pay!")
+	
+	@ApiOperation(value = "Update a Seller")
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity updateorder(@RequestBody Order Order) {
+	public ResponseEntity updateSeller(@RequestBody Seller Seller) {
 		try {
-			orderService.save(Order);
+			SellerService.save(Seller);
 		} catch (DataIntegrityViolationException e) {
 			return new ResponseEntity("value should be unique!", HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity("Order updated successfully", HttpStatus.OK);
+		return new ResponseEntity("Seller updated successfully", HttpStatus.OK);
 	}
+	
 
-	@ApiOperation(value = "List orders", response = GoodsSource.class)
+	@ApiOperation(value = "List Sellers", response = Seller.class)
 	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
-	public Page<Order> showGoodsSource(@RequestParam(value = "salesManId") Integer salesManId,
-			@RequestParam(value = "orderStatus") OrderStatus OrderStatus,@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public Page<Seller> showSeller(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "15") Integer size) {
 		Sort sort = new Sort(Direction.DESC, "id");
-		Pageable pageable = PageRequest.of(page, size, sort);
-		Page<Order> Orders = orderService.list( salesManId, OrderStatus,pageable);
-		return Orders;
+		Pageable pageable =   PageRequest.of(page, size, sort);
+		Page< Seller> Sellers = SellerService.list(pageable);
+		return Sellers;
 	}
+
 }

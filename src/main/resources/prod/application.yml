@@ -13,3 +13,17 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+        event:
+          merge:
+            entity_copy_observer: allow
+        enable_lazy_load_no_trans: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+upload:
+  path: tmp/
+  access-path: images/upload/

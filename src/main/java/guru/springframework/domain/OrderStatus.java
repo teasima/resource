@@ -2,7 +2,7 @@ package guru.springframework.domain;
 
 public enum OrderStatus {
 
-	UNPAID("UNPAID"), PAID("PAID"),SHIPPED("SHIPPED"), FINISHED("FINISHED");
+	CANCELLED("CANCELLED"), UNPAID("UNPAID"), PAID("PAID"),SHIPPED("SHIPPED"), FINISHED("FINISHED");
 
 	private String code;
 

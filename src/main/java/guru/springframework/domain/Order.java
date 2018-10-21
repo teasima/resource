@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
@@ -21,6 +24,7 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode
 @NoArgsConstructor
+@DynamicUpdate(true)
 public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +33,7 @@ public class Order {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
-	@ApiModelProperty(notes = "UNPAID , PAID ,SHIPPED , FINISHED")
+	@ApiModelProperty(notes = "CANCELLED , UNPAID , PAID ,SHIPPED , FINISHED")
 	private OrderStatus status;
 
 	@Column(unique = true)
@@ -46,10 +50,10 @@ public class Order {
 	@JoinColumn(name = "buyer_id", referencedColumnName = "id")
 	private Buyer Buyer;
 
-	@ApiModelProperty(notes = "卖家")
-	@OneToOne(targetEntity = Seller.class)
-	@JoinColumn(name = "seller_id", referencedColumnName = "id")
-	private Seller seller;
+	@ApiModelProperty(notes = "货源")
+	@ManyToOne(targetEntity = GoodsSource.class, optional = true)
+	@JoinColumn(name = "goods_source_id", referencedColumnName = "id")
+	private GoodsSource goodssource;
 
 	@ApiModelProperty(notes = "单价")
 	private BigDecimal price;
@@ -63,5 +67,14 @@ public class Order {
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(notes = "时间")
 	private Date ct;
+
+	@ApiModelProperty(notes = "地区")
+	private String area;
+
+	@ApiModelProperty(notes = "详细地址")
+	private String address;
+
+	@ApiModelProperty(notes = "支付方式")
+	private String payMethod;
 
 }
