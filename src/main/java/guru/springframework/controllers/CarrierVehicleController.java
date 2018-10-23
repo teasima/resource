@@ -1,6 +1,7 @@
 package guru.springframework.controllers;
 
 import guru.springframework.domain.CarrierVehicle;
+import guru.springframework.domain.GoodsSource;
 import guru.springframework.domain.Order;
 import guru.springframework.domain.CarrierVehicle;
 import guru.springframework.repositories.OrderRepository;
@@ -60,6 +61,19 @@ public class CarrierVehicleController {
 		}
 		return new ResponseEntity("CarrierVehicle saved successfully", HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "Update a Carrier Vehicle")
+	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity updateGoodsSource(@RequestBody CarrierVehicle CarrierVehicle) {
+		try {
+			CarrierVehicleService.save(CarrierVehicle);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity("value should be unique!", HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity("Goods Source updated successfully", HttpStatus.OK);
+	}
 
 	@ApiOperation(value = "List CarrierVehicles", response = CarrierVehicle.class)
 	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
@@ -70,5 +84,7 @@ public class CarrierVehicleController {
 		Page<CarrierVehicle> CarrierVehicles = CarrierVehicleService.list(pageable);
 		return CarrierVehicles;
 	}
+	
+	
 
 }

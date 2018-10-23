@@ -1,6 +1,7 @@
 package guru.springframework.services;
 
 import guru.springframework.domain.CarrierVehicle;
+import guru.springframework.domain.GoodsSource;
 import guru.springframework.domain.Product;
 import guru.springframework.domain.Seller;
 import guru.springframework.repositories.CarrierVehicleRepository;
@@ -8,6 +9,7 @@ import guru.springframework.repositories.ProductDAO;
 import guru.springframework.repositories.ProductRepository;
 import guru.springframework.repositories.ProfitJpaSpecificationExecutor;
 import guru.springframework.repositories.SellerRepository;
+import guru.springframework.util.BeanUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
@@ -56,8 +58,14 @@ public class CarrierVehicleServiceImpl implements CarrierVehicleService {
 	@Override
 	public CarrierVehicle save(CarrierVehicle CarrierVehicle) throws DataIntegrityViolationException {
 		log.log(Level.INFO, "save");
-	
-		return CarrierVehicleRepository.save(CarrierVehicle);
+		if (CarrierVehicle.getId() != null && CarrierVehicle.getId() > 0) {
+
+			CarrierVehicle db = CarrierVehicleRepository.findById(CarrierVehicle.getId()).orElse(null);
+			BeanUtils.copyPropertiesIgnoreNull(CarrierVehicle, db);
+			return CarrierVehicleRepository.save(db);
+		} else{
+			return CarrierVehicleRepository.save(CarrierVehicle);
+		}
 	}
 
 	@Override

@@ -82,4 +82,12 @@ public class OrderController {
 		Page<Order> Orders = orderService.list( salesManId, OrderStatus,pageable);
 		return Orders;
 	}
+	
+	@ApiOperation(value = "Delete an order")
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	public ResponseEntity delete(@PathVariable Integer id) {
+		orderService.delete(id);
+		return new ResponseEntity("Order deleted successfully", HttpStatus.OK);
+
+	}
 }

@@ -35,9 +35,11 @@ public class CarrierVehicle {
     
     @ApiModelProperty(notes = "电话")
     private String tel;
-    
-   
-    @ApiModelProperty(notes = "当前地址")
-    private String address;
+
+	@ApiModelProperty(notes = "地区")
+	private String area;
+
+	@ApiModelProperty(notes = "详细地址")
+	private String address;
  
 }
